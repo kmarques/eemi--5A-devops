@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+  labels:
+    app: helloworld
+    component: nginx
+    resource: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helloworld
+      component: nginx
+      resource: backend
+  template:
+    metadata:
+      labels:
+        app: helloworld
+        component: nginx
+        resource: backend
+    spec:
+      containers:
+        - name: backend
+          image: karthequian/helloworld
+          ports:
+            - containerPort: 80

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-service
+  labels:
+    app: helloworld
+    component: nginx
+    resource: backend
+spec:
+  selector:
+    app: helloworld
+    component: nginx
+    resource: backend
+  ports:
+    - port: 8083
+      targetPort: 80
+  type: LoadBalancer
