@@ -22,17 +22,27 @@ spec:
     spec:
       containers:
         - name: backend
-          image: kmarques/demo-node
+          image: kmarques/demo-node-nginx
           env:
             - name: PORT
               valueFrom:
                 configMapKeyRef:
                   name: helloworld-configmap-env
                   key: PORT
+            - name: NGINX_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: helloworld-configmap-env
+                  key: NGINX_PORT
+            - name: PROXY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: helloworld-configmap-env
+                  key: PROXY_URL
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: helloworld-secret-env
                   key: DATABASE_URL
           ports:
-            - containerPort: 3003
+            - containerPort: 80
