@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-tp1-app-deployment
+  labels:
+    app: kube-tp1
+    component: backend
+    resource: app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kube-tp1
+      component: backend
+      resource: app
+  template:
+    metadata:
+      labels:
+        app: kube-tp1
+        component: backend
+        resource: app
+    spec:
+      containers:
+        - name: backend
+          image: kmarques/demo-node
+          #image: kmarques/demo-node:amd64
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: kube-tp1-app-configmap-env
+                  key: PORT
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: kube-tp1-app-secret-env
+                  key: DATABASE_URL
+          ports:
+            - containerPort: 3000

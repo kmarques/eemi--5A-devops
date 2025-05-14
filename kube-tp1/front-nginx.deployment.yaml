@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-tp1-front-nginx-deployment
+  labels:
+    app: kube-tp1
+    component: frontend
+    resource: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kube-tp1
+      component: frontend
+      resource: nginx
+  template:
+    metadata:
+      labels:
+        app: kube-tp1
+        component: frontend
+        resource: nginx
+    spec:
+      containers:
+        - name: frontend
+          image: kmarques/demo-front
+          #image: kmarques/demo-front:amd64
+          env:
+            - name: NGINX_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: kube-tp1-front-nginx-configmap-env
+                  key: NGINX_PORT
+          ports:
+            - containerPort: 81

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-tp1-nginx-deployment
+  labels:
+    nginx: kube-tp1
+    component: backend
+    resource: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      nginx: kube-tp1
+      component: backend
+      resource: nginx
+  template:
+    metadata:
+      labels:
+        nginx: kube-tp1
+        component: backend
+        resource: nginx
+    spec:
+      containers:
+        - name: backend
+          image: kmarques/demo-nginx
+          #image: kmarques/demo-nginx:amd64
+          env:
+            - name: NGINX_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: kube-tp1-nginx-configmap-env
+                  key: NGINX_PORT
+            - name: PROXY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: kube-tp1-nginx-configmap-env
+                  key: PROXY_URL
+          ports:
+            - containerPort: 80
